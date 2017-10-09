@@ -1,0 +1,8 @@
+{
+  "name": "google-books-demo",
+  "version": "1.0.0",
+  "description": "Demo project wtih Google Books API",
+  "main": "index.js",
+  "author": "Lawrence Siden",
+  "license": "MIT"
+}
