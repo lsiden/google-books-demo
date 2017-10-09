@@ -5,7 +5,7 @@ console.log(__dirname)
 module.exports = {
 	target: 'web',
 	context: __dirname,
-	entry: './index.jsx',
+	entry: ['whatwg-fetch', './index.jsx'],
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),

@@ -1,18 +1,16 @@
+// This should come first.
+// See https://github.com/github/fetch
+import 'whatwg-fetch'
+
 import React from 'react'
 import ReactDom from 'react-dom'
 
-function GoogleBookDemo() {
-	return (
-		<div>
-			Stuff goes here
-		</div>
-	)
-}
+import BookBrowser from './src'
 
 (function mountDemo() {
     const el = document.getElementById('demo-mountpoint')
 
     if (el) {
-        ReactDom.render(<GoogleBookDemo />, el)
+        ReactDom.render(<div><BookBrowser /></div>, el)
     }
 })()
