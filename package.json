@@ -38,6 +38,6 @@
     "test:watch": "DEBUG=google-book-demo:* DEBUG_DEPTH=5 NODE_ENV=test yarn test --watch",
     "start": "NODE_ENV=development webpack-dev-server --config=webpack.dev.js --hot --inline --open",
     "prepare": "yarn clean; NODE_ENV=production webpack --config webpack.prod.js",
-    "gh-pages": "yarn prepare; gh-pages -d dist"
+    "gh-pages": "yarn prepare; cp index.html dist/; gh-pages -d dist"
   }
 }

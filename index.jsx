@@ -13,6 +13,6 @@ function GoogleBookDemo() {
     const el = document.getElementById('demo-mountpoint')
 
     if (el) {
-        ReactDOM.render(<GoogleBookDemo />, el)
+        ReactDom.render(<GoogleBookDemo />, el)
     }
 })()
