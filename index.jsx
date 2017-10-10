@@ -11,6 +11,7 @@ import { devToolsEnhancer } from 'redux-devtools-extension/developmentOnly'
 
 import BookBrowser from './src/book-browser'
 import { reduce } from './src/actions'
+import './src/style.scss'
 
 (function mountDemo() {
     const el = document.getElementById('demo-mountpoint')

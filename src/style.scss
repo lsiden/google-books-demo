@@ -1,0 +1,31 @@
+.footer {
+	position: fixed;
+	bottom: 0;
+	border-top: solid thin gray;
+	width: 100%;
+
+	ul {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: flex-left;
+
+		li {
+			flex: 1 0 auto;
+			list-style: none;
+		}
+	}
+}
+.banner {
+	position: relative;
+	height: 4cm;
+	overflow: hidden;
+	h1 {
+		position: absolute;
+	    z-index: 99;
+	    font-size: 30pt;
+	    color: white;
+	}
+	img {
+		position: absolute;
+	}
+}
