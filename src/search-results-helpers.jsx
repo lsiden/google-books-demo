@@ -27,7 +27,6 @@ export function getMostFreqAuthor(books) {
 	const authorFreq = getAuthorFrequency(books)
 	const arAuthorFreq = _.map(authorFreq, (frequency, author) => ({ frequency, author }))
 	return _.maxBy(arAuthorFreq, item => {
-		debug(item)
 		return item.frequency
 	})
 }

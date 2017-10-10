@@ -8,10 +8,12 @@ import { selectBook } from 'actions'
 
 const debug = require('debug')('google-books-demo:books-list')
 
-function listItem({book, onSelectBook}) {
+function listItem({book, selectedBook, onSelectBook}) {
+	const onSelectArg = book !== selectedBook ? book : null
+	debug(!!onSelectArg)
 	return (
 		<div>
-			<a href="javascript: void(0)" onClick={ev => onSelectBook(book) }>
+			<a href="javascript: void(0)" onClick={ev => onSelectBook(onSelectArg) }>
 				<BookReference book={book} />
 			</a>
 			<BookDescription book={book} />
@@ -19,7 +21,9 @@ function listItem({book, onSelectBook}) {
 	)
 }
 const ListItem = connect(
-	null,
+	state => ({
+		selectedBook: state.selectedBook,
+	}),
 	dispatch => ({
 		onSelectBook: book => dispatch(selectBook(book))
 	})

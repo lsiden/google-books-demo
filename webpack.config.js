@@ -6,7 +6,7 @@ const path=require('path')
 module.exports = {
 	target: 'web',
 	context: __dirname,
-	entry: ['whatwg-fetch', './index.jsx'],
+	entry: ['babel-polyfill', 'whatwg-fetch', './app.jsx'],
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve(__dirname, 'dist'),

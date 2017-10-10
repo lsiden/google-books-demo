@@ -1,4 +1,4 @@
-const Actions = {
+export const Actions = {
     LIST_BOOKS: 'list books',
     SELECT_BOOK: 'select book detail',
 }
