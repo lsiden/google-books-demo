@@ -1,5 +1,7 @@
 const path=require('path')
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
+
+// This plugin will cause lodash._maxBy() to return undefined in browser
+// const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
 	target: 'web',
@@ -14,7 +16,7 @@ module.exports = {
 		extensions: ['.js', '.jsx', '.json'],
 	},
 	plugins: [
-		new LodashModuleReplacementPlugin,
+		// new LodashModuleReplacementPlugin,
 	],
 	module: {
 		rules: [

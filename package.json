@@ -22,6 +22,7 @@
     "eslint": "^4.8.0",
     "eslint-plugin-react": "^7.4.0",
     "gh-pages": "^1.0.0",
+    "jest": "^21.2.1",
     "lodash-webpack-plugin": "^0.11.4",
     "redux-devtools-extension": "^2.13.2",
     "rimraf": "^2.6.2",
@@ -43,8 +44,8 @@
     "clean": "rimraf ./dist ./gh-pages",
     "lint": "eslint index.jsx src/",
     "cloc": "cloc $(git ls-files)",
-    "test": "DEBUG=google-book-demo:* DEBUG_DEPTH=5 NODE_ENV=test jest",
-    "test:watch": "DEBUG=google-book-demo:* DEBUG_DEPTH=5 NODE_ENV=test yarn test --watch",
+    "test": "DEBUG=google-books-demo:* DEBUG_DEPTH=5 NODE_ENV=test jest",
+    "test:watch": "DEBUG=google-books-demo:* DEBUG_DEPTH=5 NODE_ENV=test yarn test --watch",
     "start": "NODE_ENV=development webpack-dev-server --config=webpack.dev.js --hot --inline --open",
     "prepare": "yarn clean; NODE_ENV=production webpack --config webpack.prod.js",
     "gh-pages": "yarn prepare; mkdir gh-pages; cp -r index.html dist/ gh-pages/; gh-pages -d gh-pages"

@@ -15,11 +15,11 @@ import { reduce } from './src/actions'
     const el = document.getElementById('demo-mountpoint')
 
     if (el) {
-    	const store = createStore(reduce, {
-    		bookDetail: null,
-    	}, devToolsEnhancer())
+        const store = createStore(reduce, {
+            bookDetail: null,
+        }, devToolsEnhancer())
         ReactDom.render(<Provider store={store}>
-        	<BookBrowser />
+            <BookBrowser />
         </Provider>, el)
     }
 })()

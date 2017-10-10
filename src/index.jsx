@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import _ from 'lodash'
 
-import SearchBooks from './search-books'
+import { getBooksFromApiResponse } from './search-results-helpers'
+import SearchBooks from 'search-books'
 import BooksList from './books-list'
 import SearchResultsStats from './search-results-stats'
 import { listBooks } from './actions'
 
 const debug = require('debug')('google-books-demo:book-browser')
-const initValue = window.localStorage.getItem('initValue') || ''
+const initSearchTerm = window.localStorage.getItem('initSearchTerm') || ''
 
 class bookBrowser extends React.Component {
 	constructor(props) {
@@ -22,7 +23,7 @@ class bookBrowser extends React.Component {
 	render() {
 		return (
 			<div className="books-browser">
-				<SearchBooks initValue={initValue} limit={20} onResponse={this.onResponse} />
+				<SearchBooks initValue={initSearchTerm} limit={20} onResponse={this.onResponse} />
 				<BooksList />
 				<SearchResultsStats />
 			</div>
@@ -31,13 +32,7 @@ class bookBrowser extends React.Component {
 
 	onResponse = (res) => {
 		debug(res)
-		const bookAttrs = ['title', 'authors', 'publishedDate', 'description' ]
-		const books = res.items
-			.filter(item => item.kind === 'books#volume')
-			.map(item => ({
-				..._.pick(item.volumeInfo, bookAttrs),
-				selfLink: item.selfLink,
-			}))
+		const books = getBooksFromApiResponse(res)
 		this.setState({ books })
 		this.props.listBooks(books)
 	}

@@ -3,26 +3,10 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import BookReference from 'book-reference'
+import BookDescription from 'book-description'
 import { selectBook } from 'actions'
 
 const debug = require('debug')('google-books-demo:books-list')
-
-function bookDescription({book, selectedBook}) {
-	return !!selectedBook && book === selectedBook ? (
-		<div className="book-description">
-			{book.description || 'No description given.'}
-		</div>
-	) : null
-}
-bookDescription.propTypes = {
-	book: PropTypes.object.isRequired,
-	selectedBook: PropTypes.object,
-}
-const BookDescription = connect(
-	state => ({
-		selectedBook: state.selectedBook,
-	})
-)(bookDescription)
 
 function listItem({book, onSelectBook}) {
 	return (
