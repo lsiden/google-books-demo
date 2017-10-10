@@ -1,14 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import _ from 'lodash'
 
 import SearchBooks from './search-books'
 import BooksList from './books-list'
+import SearchResultsStats from './search-results-stats'
+import { listBooks } from './actions'
 
 const debug = require('debug')('google-books-demo:book-browser')
 const initValue = window.localStorage.getItem('initValue') || ''
 
-export default class BookBrowser extends React.Component {
+class bookBrowser extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -20,7 +23,8 @@ export default class BookBrowser extends React.Component {
 		return (
 			<div className="books-browser">
 				<SearchBooks initValue={initValue} limit={20} onResponse={this.onResponse} />
-				<BooksList books={this.state.books} />
+				<BooksList />
+				<SearchResultsStats />
 			</div>
 		)
 	}
@@ -35,6 +39,7 @@ export default class BookBrowser extends React.Component {
 				selfLink: item.selfLink,
 			}))
 		this.setState({ books })
+		this.props.listBooks(books)
 	}
 
     componentDidCatch = (error, info) => {
@@ -42,3 +47,12 @@ export default class BookBrowser extends React.Component {
     	debug(info)
     }
 }
+bookBrowser.propTypes = {
+	listBooks: PropTypes.func.isRequired,
+}
+export default connect(
+	null,
+	dispatch => ({
+		listBooks: books => dispatch(listBooks(books))
+	})
+)(bookBrowser)
