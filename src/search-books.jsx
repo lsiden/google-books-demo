@@ -1,29 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
-import responseFixture from '@fixture/query-response'
+import { getBooksFromApiResponse } from './search-results-helpers'
+import { listBooks } from './actions'
 import 'font-awesome/css/font-awesome.css'
 import './search.css'
+
+import responseFixture from '@fixture/query-response' // TODO replace this with API call
 
 const debug = require('debug')('google-books-demo:search-books')
 const ESC_KEY = 27
 const ENTER_KEY = 13
 
-export default class SearchBooks extends React.Component {
-	constructor(props) {
-		super(props)
-		this.state = {
-			query: '',
-		}
-	}
+class searchBooks extends React.Component {
+
 	static propTypes = {
-		onResponse: PropTypes.func.isRequired,
+		onApiResponse: PropTypes.func.isRequired,
 		initVal: PropTypes.string,
 		limit: PropTypes.number,
 	};
 	static defaultProps = {
 		initVal: '',
 		limit: 20,
+	}
+
+	constructor(props) {
+		super(props)
+		this.state = {
+			query: '',
+		}
 	}
 
 	render() {
@@ -52,7 +58,7 @@ export default class SearchBooks extends React.Component {
 
 	onSubmitSearch() {
 		debug(this.state.query)
-		this.props.onResponse(responseFixture)
+		this.props.onApiResponse(responseFixture)
 	}
 
     componentDidMount() {
@@ -65,3 +71,14 @@ export default class SearchBooks extends React.Component {
         })
     }
 }
+
+export default connect(
+	null,
+	dispatch => ({
+		onApiResponse: res => {
+			debug(res)
+			const books = getBooksFromApiResponse(res)
+			dispatch(listBooks(books))
+		}
+	})
+)(searchBooks)
