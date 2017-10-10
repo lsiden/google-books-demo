@@ -9,7 +9,7 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { devToolsEnhancer } from 'redux-devtools-extension/developmentOnly'
 
-import BookBrowser from './src/app'
+import BookBrowser from './src/book-browser'
 import { reduce } from './src/actions'
 
 (function mountDemo() {
