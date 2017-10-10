@@ -18,7 +18,7 @@ class searchBooks extends React.Component {
 
 	static propTypes = {
 		submitQuery: PropTypes.func.isRequired,
-		initVal: PropTypes.string,
+		initQuery: PropTypes.string,
 		limit: PropTypes.number,
 		errorOccurred: PropTypes.oneOfType([
 			PropTypes.bool,
@@ -26,22 +26,23 @@ class searchBooks extends React.Component {
 		]),
 	};
 	static defaultProps = {
-		initVal: '',
-		limit: 20,
+		initQuery: '',
 		errorOccurred: ''
 	}
 
 	constructor(props) {
 		super(props)
 		this.state = {
-			query: '',
+			query: props.initQuery,
+			limit: props.limit,
 		}
 	}
 
 	render() {
 		// See https://codepen.io/huange/pen/rbqsD
-		const { query } = this.state
-		const { errorOccurred } = this.props
+		const { query,  } = this.state
+		const { initQuery, limit, submitQuery, errorOccurred } = this.props
+		let key=0
 		return (
 			<div className="search-books">
 				<div className="search-wrap">
@@ -50,14 +51,26 @@ class searchBooks extends React.Component {
 							type="text"
 							name="query"
 							className="searchTerm"
+							value={initQuery}
 							onChange={ev => this.onChange(ev)} value={query}
 							placeholder="Title or Author"
 						/>
 						<button type="search" className="searchButton"
-							onClick={ ev => this.props.submitQuery(query) }
+							onClick={ ev => submitQuery(query, limit) }
 						>
 							<span className="fa fa-search"></span>
 						</button>
+					</div>
+					<div className="max-search-items">
+						<label>Max Items&nbsp;
+						<select name="limit" onChange={ev => submitQuery(query, ev.target.value)} value={limit}>
+							{
+								[10, 15, 20, 30, 40].map(limit => (
+									<option key={++key} value={limit}>{limit}</option>
+								))
+							}
+						</select>
+						</label>
 					</div>
 				</div>
 				{
@@ -90,11 +103,15 @@ class searchBooks extends React.Component {
 
 export default connect(
 	state => ({
-		errorOccurred: state.errorOccurred
+		limit: state.limit,
+		errorOccurred: state.errorOccurred,
 	}),
 	dispatch => ({
-		submitQuery: query => {
-		    const uri = `https://www.googleapis.com/books/v1/volumes?key=${apiKey}&q=intitle:${query}+inauthor:${query}&maxResults=20`
+		submitQuery: (query, limit=20) => {
+			if (!query) {
+				return
+			}
+		    const uri = `https://www.googleapis.com/books/v1/volumes?key=${apiKey}&q=intitle:${query}+inauthor:${query}&maxResults=${limit}`
 		    const startTime = new Date()
 		    fetch(uri).then(function(res) {
 		    	const { status, type, statusText } = res

@@ -1,9 +1,17 @@
 /* Adapted from https://codepen.io/huange/pen/rbqsD?editors=0100#0
  */
 
-.search {
+.search-wrap {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
   width: 100%;
-  position: relative
+  height: 1cm;
+}
+
+.search {
+  position: relative;
+  flex: 1;
 }
 
 .searchTerm {
@@ -36,7 +44,7 @@
   font-size: 20px;
 }
 
-.search-wrap{
-  width: 50%;
-  height: 1cm;
+.max-search-items {
+  flex: 1;
+  margin-left: 6em;
 }

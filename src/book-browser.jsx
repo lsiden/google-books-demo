@@ -24,7 +24,7 @@ class bookBrowser extends React.Component {
 	render() {
 		return (
 			<div className="books-browser">
-				<SearchBooks initValue={initialQuery} limit={20} />
+				<SearchBooks initQuery={initialQuery} limit={20} />
 				<BooksList />
 				<SearchResultsStats />
 			</div>
