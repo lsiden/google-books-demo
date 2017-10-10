@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { getBooksFromApiResponse } from './search-results-helpers'
-import { listBooks } from './actions'
+import { queryPending, processQueryError } from './actions'
+import apiKey from '../google-api-key'
 import 'font-awesome/css/font-awesome.css'
 import './search.css'
 
@@ -16,13 +17,15 @@ const ENTER_KEY = 13
 class searchBooks extends React.Component {
 
 	static propTypes = {
-		onApiResponse: PropTypes.func.isRequired,
+		submitQuery: PropTypes.func.isRequired,
 		initVal: PropTypes.string,
 		limit: PropTypes.number,
+		errorOccurred: PropTypes.string,
 	};
 	static defaultProps = {
 		initVal: '',
 		limit: 20,
+		errorOccurred: ''
 	}
 
 	constructor(props) {
@@ -34,14 +37,29 @@ class searchBooks extends React.Component {
 
 	render() {
 		// See https://codepen.io/huange/pen/rbqsD
+		const { query } = this.state
+		const { errorOccurred } = this.props
 		return (
-			<div className="search-wrap">
-				<div className="search">
-					<input type="text" name="query" className="searchTerm" onChange={ev => this.onChange(ev)} value={this.state.query} placeholder="Title or Author" />
-					<button type="search" className="searchButton" onClick={ev => this.onSubmitSearch()} >
-						<span className="fa fa-search"></span>
-					</button>
+			<div className="search-books">
+				<div className="search-wrap">
+					<div className="search">
+						<input
+							type="text"
+							name="query"
+							className="searchTerm"
+							onChange={ev => this.onChange(ev)} value={query}
+							placeholder="Title or Author"
+						/>
+						<button type="search" className="searchButton"
+							onClick={ ev => this.props.submitQuery(query) }
+						>
+							<span className="fa fa-search"></span>
+						</button>
+					</div>
 				</div>
+				{
+					!!errorOccurred && <div className="error-message">{errorOccurred}</div>
+				}
 			</div>
 		)
 	}
@@ -56,29 +74,39 @@ class searchBooks extends React.Component {
 		this.setState({ [name]: value })
 	}
 
-	onSubmitSearch() {
-		debug(this.state.query)
-		this.props.onApiResponse(responseFixture)
-	}
-
     componentDidMount() {
         document.addEventListener('keydown', ev => {
             if (ev.keyCode === ESC_KEY) {
                 this.onCancel()
             } else if (ev.keyCode === ENTER_KEY) {
-            	this.onSubmitSearch()
+            	this.props.submitQuery(this.state.query)
             }
         })
     }
 }
 
 export default connect(
-	null,
+	state => ({
+		errorOccurred: state.errorOccurred
+	}),
 	dispatch => ({
-		onApiResponse: res => {
-			debug(res)
-			const books = getBooksFromApiResponse(res)
-			dispatch(listBooks(books))
-		}
+		submitQuery: query => {
+		    const uri = `https://www.googleapis.com/books/v1/volumes?key=${apiKey}&q=intitle:${query}+inauthor:${query}`
+		    fetch(uri).then(function(res) {
+		    	const { status, type, statusText } = res
+		    	if (res.status !== 200) {
+		    		const errMsg = `An error occurred. status=${status}; type=${type}; statusText=${statusText}`
+		    		const error = new Error(errMsg)
+		    		error.response = res
+		    		throw error
+		    	}
+		        const books = getBooksFromApiResponse(res)
+		        dispatch(processQueryResponse(books))
+		    }).catch(function(err) {
+		        debug(err)
+	    		dispatch(processQueryError(err.toString()))
+		    })
+			dispatch(queryPending())
+		},
 	})
 )(searchBooks)
