@@ -1,6 +1,5 @@
 const path=require('path')
-
-console.log(__dirname)
+const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 
 module.exports = {
 	target: 'web',
@@ -14,6 +13,9 @@ module.exports = {
 	resolve: {
 		extensions: ['.js', '.jsx', '.json'],
 	},
+	plugins: [
+		new LodashModuleReplacementPlugin,
+	],
 	module: {
 		rules: [
 		{

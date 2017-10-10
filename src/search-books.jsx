@@ -10,7 +10,6 @@ export default class SearchBooks extends React.Component {
 		super(props)
 		this.state = {
 			query: '',
-			result: [],
 		}
 		this.onChange = this.onChange.bind(this)
 		this.onSubmitSearch = this.onSubmitSearch.bind(this)
@@ -27,7 +26,7 @@ export default class SearchBooks extends React.Component {
 
 	render() {
 		return (
-			<form onSubmit={ev => { ev.preventDefault(); this.onSubmitSearch() }} >
+			<form className="search-books" onSubmit={ev => { ev.preventDefault(); this.onSubmitSearch() }} >
 				<label>
 					Search
 					&nbsp;<input type="text" name="query" onChange={this.onChange} value={this.state.query} placeholder="Title or Author" />
