@@ -12,6 +12,9 @@ const debug = require('debug')('google-books-demo:search-results-helpers')
 export const bookAttrs = _.keys(bookAttrDefaults)
 
 export function getAuthorFrequency(books) {
+	if (!books || books.length === 0) {
+		return {}
+	}
 	const result = {}
 	_.flatten(books.map(book => book.authors || []))
 	.forEach(author => {
@@ -24,6 +27,9 @@ export function getAuthorFrequency(books) {
 }
 
 export function getMostFreqAuthor(books) {
+	if (!books || books.length === 0) {
+		return 'not available'
+	}
 	const authorFreq = getAuthorFrequency(books)
 	const arAuthorFreq = _.map(authorFreq, (frequency, author) => ({ frequency, author }))
 	return _.maxBy(arAuthorFreq, item => {
@@ -32,20 +38,25 @@ export function getMostFreqAuthor(books) {
 }
 
 export function getEarliestPubDate(books) {
-	return _.minBy(books, book => Number(book.publishedDate)).publishedDate
+	if (!books || books.length === 0) {
+		return 'not available'
+	}
+	return _.minBy(books, book => Number(book.publishedDate)).publishedDate || 'not available'
 }
 
 export function getLatestPubDate(books) {
-	return _.maxBy(books, book => Number(book.publishedDate)).publishedDate
+	if (!books || books.length === 0) {
+		return 'not available'
+	}
+	return _.maxBy(books, book => Number(book.publishedDate)).publishedDate || 'not available'
 }
 
 export function getPropOrDefault(obj, prop, defaultValue) {
-	return typeof obj[prop] !== 'undefined' ? obj[prop] : defaultValue
+	return typeof obj !== 'undefined' && typeof obj[prop] !== 'undefined' ? obj[prop] : defaultValue
 }
 
 export function getBooksFromApiResponse(res) {
-	return res.items
-	.filter(item => item.kind === 'books#volume')
+	return res.items ? res.items.filter(item => item.kind === 'books#volume')
 	.map(item => {
 		const vinfo = item.volumeInfo
 		const book = {
@@ -55,5 +66,5 @@ export function getBooksFromApiResponse(res) {
 			book[attr] = getPropOrDefault(vinfo, attr, bookAttrDefaults[attr])
 		})
 		return book
-	})
+	}) : []
 }

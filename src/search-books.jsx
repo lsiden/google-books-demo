@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { getBooksFromApiResponse } from './search-results-helpers'
-import { queryPending, processQueryError } from './actions'
+import { queryPending, processQueryError, processQueryResponse } from './actions'
 import apiKey from '../google-api-key'
 import 'font-awesome/css/font-awesome.css'
 import './search.css'
@@ -20,7 +20,10 @@ class searchBooks extends React.Component {
 		submitQuery: PropTypes.func.isRequired,
 		initVal: PropTypes.string,
 		limit: PropTypes.number,
-		errorOccurred: PropTypes.string,
+		errorOccurred: PropTypes.oneOfType([
+			PropTypes.bool,
+			PropTypes.string,
+		]),
 	};
 	static defaultProps = {
 		initVal: '',
@@ -91,7 +94,8 @@ export default connect(
 	}),
 	dispatch => ({
 		submitQuery: query => {
-		    const uri = `https://www.googleapis.com/books/v1/volumes?key=${apiKey}&q=intitle:${query}+inauthor:${query}`
+		    const uri = `https://www.googleapis.com/books/v1/volumes?key=${apiKey}&q=intitle:${query}+inauthor:${query}&maxResults=20`
+		    const startTime = new Date()
 		    fetch(uri).then(function(res) {
 		    	const { status, type, statusText } = res
 		    	if (res.status !== 200) {
@@ -100,11 +104,15 @@ export default connect(
 		    		error.response = res
 		    		throw error
 		    	}
-		        const books = getBooksFromApiResponse(res)
-		        dispatch(processQueryResponse(books))
+		    	const endTime = new Date()
+		    	res.json().then(function(json) {
+			        const books = getBooksFromApiResponse(json)
+			        dispatch(processQueryResponse(books, endTime - startTime))
+		    	})
 		    }).catch(function(err) {
 		        debug(err)
-	    		dispatch(processQueryError(err.toString()))
+		    	const endTime = new Date()
+	    		dispatch(processQueryError(err.toString(), endTime - startTime))
 		    })
 			dispatch(queryPending())
 		},

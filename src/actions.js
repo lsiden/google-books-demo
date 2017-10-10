@@ -12,12 +12,12 @@ export function queryPending(query) {
     return { type: Actions.QUERY_PENDING, queryPending: true, errorOccurred: false }
 }
 
-export function processQueryError(errMsg) {
-    return { type: Actions.PROCESS_QUERY_ERROR, queryPending: false, errorOccurred: errMsg }
+export function processQueryError(errMsg, responseTime) {
+    return { type: Actions.PROCESS_QUERY_ERROR, responseTime, queryPending: false, errorOccurred: errMsg }
 }
 
-export function processQueryResponse(books) {
-    return { type: Actions.PROCESS_QUERY_RESPONSE, books, queryPending: false, errorOccurred: false }
+export function processQueryResponse(books, responseTime) {
+    return { type: Actions.PROCESS_QUERY_RESPONSE, books, responseTime, queryPending: false, errorOccurred: false, }
 }
 
 export function selectBook(selectedBook) {

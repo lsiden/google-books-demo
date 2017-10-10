@@ -11,7 +11,7 @@ import {
 
 const debug = require('debug')('google-books-demo:search-results-stats')
 
-function searchResultsStats({books, millisec}) {
+function searchResultsStats({books, responseTime}) {
 	if (!books) {
 		return null
 	}
@@ -24,13 +24,13 @@ function searchResultsStats({books, millisec}) {
 			{
 				books.length === 0 ? <ul>
 					<li>No books found matching search.</li>
-					<li>Response time: 0ms</li>
+					<li>Response time: {responseTime}ms</li>
 				</ul> : <ul>
 					<li>Number of books found: {books.length}</li>
 					<li>Most frequent author in results: {mostFrequentAuthor.author} appears {mostFrequentAuthor.frequency} out of {books.length} times</li>
 					<li>Earliest publication date: {earliestPubDate}</li>
 					<li>Latest publication date: {latestPubDate}</li>
-					<li>Response time: 0ms</li>
+					<li>Response time: {responseTime}ms</li>
 				</ul>
 			}
 		</div>
@@ -39,5 +39,6 @@ function searchResultsStats({books, millisec}) {
 export default connect(
 	state => ({
 		books: state.books,
+		responseTime: state.responseTime,
 	})
 )(searchResultsStats)

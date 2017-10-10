@@ -5,24 +5,6 @@ body{
   font-family: 'Open Sans', sans-serif;
 }
 
-.banner {
-	position: relative;
-	height: 4cm;
-	overflow: hidden;
-	margin-bottom: 1cm;
-	h1 {
-		position: absolute;
-		top: 0;
-		left: 1em;
-	    z-index: 99;
-	    font-size: 30pt;
-	    color: white;
-	}
-	img {
-		position: absolute;
-	}
-}
-
 .error-message {
 	color: red;
 }
