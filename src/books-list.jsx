@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { selectBookDetail } from 'actions'
+import { selectBook } from 'actions'
 
 const debug = require('debug')('google-books-demo:books-list')
 
@@ -14,18 +14,39 @@ function Authors({authors=['no author given']}) {
 	)
 }
 
+function bookDescription({book, selectedBook}) {
+	return !!selectedBook && book === selectedBook ? (
+		<div className="book-description">
+			{book.description || 'No description given.'}
+		</div>
+	) : null
+}
+bookDescription.propTypes = {
+	book: PropTypes.object.isRequired,
+	selectedBook: PropTypes.object,
+}
+const BookDescription = connect(
+	state => ({
+		selectedBook: state.selectedBook,
+	})
+)(bookDescription)
+
 function listItem({book, onSelectBook}) {
 	return (
-		<a href="javascript: void(0)" onClick={ev => onSelectBook(book) }>
-			<Authors authors={book.authors} />
-			<span className="title">&nbsp;- {book.title}</span>
-		</a>
+		<div>
+			<a href="javascript: void(0)" onClick={ev => onSelectBook(book) }>
+				<Authors authors={book.authors} />
+				&nbsp;- <span className="title">{book.title}</span>
+				&nbsp;- <span className="pubDate">pub. {book.publishedDate || 'date unknown'}</span>
+			</a>
+			<BookDescription book={book} />
+		</div>
 	)
 }
 const ListItem = connect(
 	null,
 	dispatch => ({
-		onSelectBook: book => dispatch(selectBookDetail(book))
+		onSelectBook: book => dispatch(selectBook(book))
 	})
 )(listItem)
 
