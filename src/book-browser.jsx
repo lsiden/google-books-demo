@@ -24,8 +24,10 @@ class bookBrowser extends React.Component {
 		return (
 			<div className="books-browser">
 				<SearchBooks initValue={initSearchTerm} limit={20} onResponse={this.onResponse} />
-				<BooksList />
-				<SearchResultsStats />
+				<div className="dynamic-height">
+					<BooksList />
+					<SearchResultsStats />
+				</div>
 			</div>
 		)
 	}
