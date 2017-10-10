@@ -9,7 +9,7 @@ export const Actions = {
     SET_LIMIT: 'set limit',
 };
 
-export function queryPending(query) {
+export function queryPending() {
     return { type: Actions.QUERY_PENDING, queryPending: true, errorOccurred: false }
 }
 

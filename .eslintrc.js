@@ -16,7 +16,7 @@ module.exports = {
     ],
     "rules": {
         "no-unused-vars": ["error", {
-            "varsIgnorePattern": "^debug$|^_"
+            "varsIgnorePattern": "^debug$"
         }],
         "indent": ["error", 4 ],
         "linebreak-style": ["error", "unix"],
