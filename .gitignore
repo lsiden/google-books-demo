@@ -57,5 +57,6 @@ typings/
 # dotenv environment variables file
 .env
 
+gh-pages/
 dist/
 google-api-key.js

@@ -43,7 +43,6 @@ describe('SearchResultsStats', function() {
 			book.find('a').simulate('click')
 			const actions = store.getActions()
 			expect(actions).toHaveLength(2)
-			debug(actions)
 			expect(actions[1].type).toBe(Actions.SELECT_BOOK)
 			expect(actions[1].selectedBook).toBeFalsy()
 		}, 0)
