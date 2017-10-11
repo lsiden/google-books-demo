@@ -27,7 +27,8 @@ class searchBooks extends React.Component {
 	};
 	static defaultProps = {
 		initQuery: '',
-		errorOccurred: ''
+		errorOccurred: '',
+		limit: 20,
 	}
 
 	constructor(props) {
@@ -85,7 +86,7 @@ class searchBooks extends React.Component {
 	}
 
 	onChange(ev) {
-		debug(ev)
+		// debug(ev)
 		const { name, value } = ev.target
 		this.setState({ [name]: value })
 
@@ -99,7 +100,8 @@ class searchBooks extends React.Component {
             if (ev.keyCode === ESC_KEY) {
                 this.onCancel()
             } else if (ev.keyCode === ENTER_KEY) {
-            	this.props.submitQuery(this.state.query)
+            	const { query, limit } = this.state
+            	this.props.submitQuery(query, limit)
             }
         })
     }
