@@ -4,18 +4,26 @@ import { connect } from 'react-redux'
 
 import BookReference from 'book-reference'
 import {
-	getMostFreqAuthor,
+	getMostFreqAuthors,
 	getEarliestPubDate,
 	getLatestPubDate,
 } from 'search-results-helpers'
 
 const debug = require('debug')('google-books-demo:search-results-stats')
 
+function mostFreqAuthorsText(freqAuthors, numBooks) {
+	const authorNames = freqAuthors.map(item => item.author).join(', ')
+	const frequency = freqAuthors[0].frequency
+	const author_s = freqAuthors.length > 1 ? 'authors' : 'author'
+	const appear_s = freqAuthors.length > 1 ? 'each appears' : 'appears'
+	return `Most frequent ${author_s} in results: ${authorNames} ${appear_s} ${frequency} out of ${numBooks} times.`
+}
+
 function searchResultsStats({books, responseTime}) {
 	if (!books) {
 		return null
 	}
-	const mostFrequentAuthor = getMostFreqAuthor(books)
+	const freqAuthors = getMostFreqAuthors(books)
 	const earliestPubDate = getEarliestPubDate(books)
 	const latestPubDate = getLatestPubDate(books)
 	return (
@@ -27,7 +35,7 @@ function searchResultsStats({books, responseTime}) {
 					<li>Response time: {responseTime}ms</li>
 				</ul> : <ul>
 					<li>Number of books found: {books.length}</li>
-					<li>Most frequent author in results: {mostFrequentAuthor.author} appears {mostFrequentAuthor.frequency} out of {books.length} times</li>
+					<li>{mostFreqAuthorsText(freqAuthors, books.length)}</li>
 					<li>Earliest publication date: {earliestPubDate}</li>
 					<li>Latest publication date: {latestPubDate}</li>
 					<li>Response time: {responseTime}ms</li>

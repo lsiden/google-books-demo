@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import {
 	getAuthorFrequency,
-	getMostFreqAuthor,
+	getMostFreqAuthors,
 	getEarliestPubDate,
 	getLatestPubDate,
 	getBooksFromApiResponse,
@@ -38,13 +38,13 @@ describe('search-results-helpers', function() {
 			expect(_.toArray(authorFreq)).toHaveLength(2)
 		})
 	})
-	describe('getMostFreqAuthor', function() {
+	describe('getMostFreqAuthors', function() {
 		it('returns {author, freq} for author that appears most frequently in search result', function() {
-			const expected = {
+			const expected = [{
 				author: 'Charles Dickens',
 				frequency: 9,
-			}
-			expect(getMostFreqAuthor(books)).toEqual(expected)
+			}]
+			expect(getMostFreqAuthors(books)).toEqual(expected)
 		})
 		// TODO
 		it('returns an array when more than one author appears most frequently')

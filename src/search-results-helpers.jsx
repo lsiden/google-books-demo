@@ -26,15 +26,18 @@ export function getAuthorFrequency(books) {
 	return result
 }
 
-export function getMostFreqAuthor(books) {
+// Returns [ { author, frequency }, ... ]
+export function getMostFreqAuthors(books) {
 	if (!books || books.length === 0) {
 		return 'not available'
 	}
 	const authorFreq = getAuthorFrequency(books)
 	const arAuthorFreq = _.map(authorFreq, (frequency, author) => ({ frequency, author }))
-	return _.maxBy(arAuthorFreq, item => {
+	const mostFrequent = _.maxBy(arAuthorFreq, item => {
 		return item.frequency
 	})
+	const maxFreqValue = mostFrequent.frequency
+	return arAuthorFreq.filter(item => item.frequency === maxFreqValue)
 }
 
 export function getEarliestPubDate(books) {
