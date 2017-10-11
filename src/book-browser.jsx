@@ -9,6 +9,7 @@ import SearchResultsStats from './search-results-stats'
 
 const debug = require('debug')('google-books-demo:book-browser')
 const initialQuery = window.localStorage.getItem('initialQuery') || ''
+const limit = Number(window.localStorage.getItem('limit')) || 20
 
 class bookBrowser extends React.Component {
 	static propTypes = {
@@ -24,7 +25,7 @@ class bookBrowser extends React.Component {
 	render() {
 		return (
 			<div className="books-browser">
-				<SearchBooks initQuery={initialQuery} limit={20} />
+				<SearchBooks initQuery={initialQuery} limit={limit} />
 				<BooksList />
 				<SearchResultsStats />
 			</div>

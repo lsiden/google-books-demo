@@ -6,7 +6,6 @@ export const Actions = {
     PROCESS_QUERY_ERROR: 'process server error',
     LIST_BOOKS: 'list books',
     SELECT_BOOK: 'select book detail',
-    SET_LIMIT: 'set limit',
 };
 
 export function queryPending() {
@@ -25,10 +24,6 @@ export function selectBook(selectedBook) {
     return { type: Actions.SELECT_BOOK, selectedBook }
 }
 
-export function setLimit(limit) {
-    return { type: Actions.SET_LIMIT, limit }
-}
-
 export function reduce(state={}, action) {
     const { type, ...payload } = action
 
@@ -38,7 +33,6 @@ export function reduce(state={}, action) {
     case Actions.PROCESS_QUERY_RESPONSE:
     case Actions.LIST_BOOKS:
     case Actions.SELECT_BOOK:
-    case Actions.SET_LIMIT:
         return {...state, ...payload, }
     default:
         return state

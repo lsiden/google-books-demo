@@ -40,8 +40,8 @@ class searchBooks extends React.Component {
 
 	render() {
 		// See https://codepen.io/huange/pen/rbqsD
-		const { query,  } = this.state
-		const { initQuery, limit, submitQuery, errorOccurred } = this.props
+		const { query, limit, } = this.state
+		const { initQuery, submitQuery, errorOccurred } = this.props
 		let key=0
 		return (
 			<div className="search-books">
@@ -63,10 +63,10 @@ class searchBooks extends React.Component {
 					</div>
 					<div className="max-search-items">
 						<label>Max Items&nbsp;
-						<select name="limit" onChange={ev => submitQuery(query, ev.target.value)} value={limit}>
+						<select name="limit" onChange={ev => this.onChange(ev)} value={limit}>
 							{
-								[10, 15, 20, 30, 40].map(limit => (
-									<option key={++key} value={limit}>{limit}</option>
+								[10, 15, 20, 30, 40].map(_limit => (
+									<option key={++key} value={_limit}>{_limit}</option>
 								))
 							}
 						</select>
@@ -88,6 +88,10 @@ class searchBooks extends React.Component {
 		debug(ev)
 		const { name, value } = ev.target
 		this.setState({ [name]: value })
+
+		if (name === 'limit') {
+			this.props.submitQuery(this.state.query, value)
+		}
 	}
 
     componentDidMount() {
@@ -103,7 +107,6 @@ class searchBooks extends React.Component {
 
 export default connect(
 	state => ({
-		limit: state.limit,
 		errorOccurred: state.errorOccurred,
 	}),
 	dispatch => ({
@@ -113,6 +116,7 @@ export default connect(
 			}
 		    const uri = `https://www.googleapis.com/books/v1/volumes?key=${apiKey}&q=intitle:${query}+inauthor:${query}&maxResults=${limit}`
 		    const startTime = new Date()
+
 		    fetch(uri).then(function(res) {
 		    	const { status, type, statusText } = res
 		    	if (res.status !== 200) {
@@ -132,6 +136,8 @@ export default connect(
 	    		dispatch(processQueryError(err.toString(), endTime - startTime))
 		    })
 			dispatch(queryPending())
+			window.localStorage.setItem('initialQuery', query)
+			window.localStorage.setItem('limit', limit)
 		},
 	})
 )(searchBooks)
