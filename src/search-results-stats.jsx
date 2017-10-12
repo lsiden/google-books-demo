@@ -12,11 +12,12 @@ import {
 const debug = require('debug')('google-books-demo:search-results-stats')
 
 function mostFreqAuthorsText(freqAuthors, numBooks) {
-	const authorNames = freqAuthors.map(item => item.author).join(', ')
-	const frequency = freqAuthors[0].frequency
-	const author_s = freqAuthors.length > 1 ? 'authors' : 'author'
-	const appear_s = freqAuthors.length > 1 ? 'each appears' : 'appears'
-	return `Most frequent ${author_s} in results: ${authorNames} ${appear_s} ${frequency} out of ${numBooks} times.`
+	const { authors, frequency } = freqAuthors
+	const authorsText = authors.join(', ')
+	const isPlural = authors.length > 1
+	const author_s = isPlural ? 'authors' : 'author'
+	const appear_s = isPlural ? 'each appears' : 'appears'
+	return `Most frequent ${author_s} in results: ${authorsText} ${appear_s} ${frequency} out of ${numBooks} times.`
 }
 
 function searchResultsStats({books, responseTime}) {

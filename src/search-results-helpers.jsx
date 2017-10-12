@@ -12,13 +12,8 @@ const debug = require('debug')('google-books-demo:search-results-helpers')
 export const bookAttrs = _.keys(bookAttrDefaults)
 
 export function getAuthorFrequency(books=[]) {
-	return books.reduce(function(result, book) {
-		book.authors.forEach(author => {
-			if (!result[author]) {
-				result[author] = 0
-			}
-			result[author] += 1
-		})
+	return _.flatten(books.map(book => book.authors)).reduce((result, author) => {
+		result[author] = (result[author] || 0) + 1
 		return result
 	}, {})
 }
@@ -30,11 +25,13 @@ export function getMostFreqAuthors(books) {
 	}
 	const authorFreq = getAuthorFrequency(books)
 	const arAuthorFreq = _.map(authorFreq, (frequency, author) => ({ frequency, author }))
-	const mostFrequent = _.maxBy(arAuthorFreq, item => {
+	const aMostFrequentAuthor = _.maxBy(arAuthorFreq, item => {
 		return item.frequency
 	})
-	const maxFreqValue = mostFrequent.frequency
-	return arAuthorFreq.filter(item => item.frequency === maxFreqValue)
+	return {
+		frequency: aMostFrequentAuthor.frequency,
+		authors: arAuthorFreq.filter(item => item.frequency === aMostFrequentAuthor.frequency).map(item => item.author),
+	}
 }
 
 export function getEarliestPubDate(books) {
