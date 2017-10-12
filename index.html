@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <!-- see https://developers.google.com/web/fundamentals/design-and-ui/responsive/ -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Google Books Browser Demo</title>
+
+	<script src="https://qa.polyfill.io/v2/polyfill.min.js"></script>
+	<script type="text/javascript">
+		// see https://reactjs.org/docs/javascript-environment-requirements.html
+		if (!window.requestAnimationFrame) {
+			window.requestAnimationFrame = function(callback) {
+				setTimeout(callback, 0);
+			}
+		}
+	</script>
+	<style type="text/css">
+		.banner h1 {
+			position: absolute;
+			top: 0;
+			left: 1em;
+		    z-index: 99;
+		    font-size: 30pt;
+		    color: white;
+		}
+		.banner img {
+			position: absolute;
+			top: 0;
+			left: 0	;
+		}
+
+		.banner {
+			position: relative;
+			height: 4cm;
+			overflow: hidden;
+			margin-bottom: 1cm;
+		}
+
+	</style>
+</head>
+
+<body>
+	<div class="banner">
+	    <h1>Google Books Browser Demo</h1>
+		<img src="bookshelf.jpg" />
+	</div>
+
+    <div id="demo-mountpoint"></div>
+    <script src="dist/bundle.js"></script>
+    <div class="footer">
+    	<ul>
+    		<li>Created by <a href="https://linkedin.com/in/lsiden/">Lawrence Siden</a></li>
+    		<li>Banner photo by <a href="https://www.flickr.com/photos/davidorban/">David Orban.</a></li>
+    		<li><a href="https://github.com/lsiden/google-books-demo">Source code</a></li>
+	    </ul>
+    </div>
+</body>
+</html>
