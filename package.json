@@ -64,6 +64,6 @@
     "test:watch": "DEBUG=google-books-demo:* DEBUG_DEPTH=5 NODE_ENV=test yarn test --watch",
     "start": "NODE_ENV=development webpack-dev-server --config=webpack.dev.js --hot --inline --open",
     "prepare": "yarn clean; NODE_ENV=production webpack --config webpack.prod.js",
-    "gh-pages": "yarn prepare; mkdir gh-pages; cp -r index.html bookshelf.jpg src/assets dist/ gh-pages/; gh-pages -d gh-pages"
+    "gh-pages": "yarn prepare; node ./prepare-gh-pages.js; gh-pages -d gh-pages"
   }
 }
