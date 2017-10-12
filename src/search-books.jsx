@@ -127,11 +127,11 @@ export default connect(
 		    		error.response = res
 		    		throw error
 		    	}
+		    	return res.json()
+		    }).then(function(json) {
 		    	const endTime = new Date()
-		    	res.json().then(function(json) {
-			        const books = getBooksFromApiResponse(json)
-			        dispatch(processQueryResponse(books, endTime - startTime))
-		    	})
+		        const books = getBooksFromApiResponse(json)
+		        dispatch(processQueryResponse(books, endTime - startTime))
 		    }).catch(function(err) {
 		        debug(err)
 		    	const endTime = new Date()
