@@ -25,6 +25,7 @@ function toPromise(func) {
         return Promise.all([
             fs.copy('dist', path.join(dest, 'dist')),
             fs.copy('./index.html', path.join(dest, 'index.html')),
+            fs.copy('./bookshelf.jpg', path.join(dest, 'bookshelf.jpg')),
             toPromise(exec)('yarn babel index.jsx -o ' + path.join(dest, 'index.js')),
         ])
     }).catch(function(err) {
