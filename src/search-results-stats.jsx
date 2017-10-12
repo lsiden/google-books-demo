@@ -13,11 +13,12 @@ const debug = require('debug')('google-books-demo:search-results-stats')
 
 function mostFreqAuthorsText(freqAuthors, numBooks) {
 	const { authors, frequency } = freqAuthors
-	const authorsText = authors.join(', ')
 	const isPlural = authors.length > 1
-	const author_s = isPlural ? 'authors' : 'author'
-	const appear_s = isPlural ? 'each appears' : 'appears'
-	return `Most frequent ${author_s} in results: ${authorsText} ${appear_s} ${frequency} out of ${numBooks} times.`
+	return [
+		`Most frequent ${isPlural ? 'authors' : 'author'} in results:`,
+		` ${authors.join(', ')} ${isPlural ? 'each appear' : 'appears'}`,
+		` ${frequency} out of ${numBooks} times.`
+		].join('')
 }
 
 function searchResultsStats({books, responseTime}) {

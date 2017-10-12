@@ -40,10 +40,10 @@ describe('search-results-helpers', function() {
 	})
 	describe('getMostFreqAuthors', function() {
 		it('returns {author, freq} for author that appears most frequently in search result', function() {
-			const expected = [{
-				author: 'Charles Dickens',
+			const expected = {
+				authors: ['Charles Dickens'],
 				frequency: 9,
-			}]
+			}
 			expect(getMostFreqAuthors(books)).toEqual(expected)
 		})
 		// TODO
