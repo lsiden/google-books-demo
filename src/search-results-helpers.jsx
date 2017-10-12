@@ -11,19 +11,16 @@ const debug = require('debug')('google-books-demo:search-results-helpers')
 
 export const bookAttrs = _.keys(bookAttrDefaults)
 
-export function getAuthorFrequency(books) {
-	if (!books || books.length === 0) {
-		return {}
-	}
-	const result = {}
-	_.flatten(books.map(book => book.authors || []))
-	.forEach(author => {
-		if (!result[author]) {
-			result[author] = 0
-		}
-		result[author] += 1
-	})
-	return result
+export function getAuthorFrequency(books=[]) {
+	return books.reduce(function(result, book) {
+		book.authors.forEach(author => {
+			if (!result[author]) {
+				result[author] = 0
+			}
+			result[author] += 1
+		})
+		return result
+	}, {})
 }
 
 // Returns [ { author, frequency }, ... ]
