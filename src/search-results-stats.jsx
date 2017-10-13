@@ -16,7 +16,7 @@ function mostFreqAuthorsText(freqAuthors, numBooks) {
 	const isPlural = authors.length > 1
 	return [
 		`Most frequent ${isPlural ? 'authors' : 'author'} in results:`,
-		` ${authors.join(', ')} ${isPlural ? 'each appear' : 'appears'}`,
+		` ${authors.join('; ')} ${isPlural ? 'each appear' : 'appears'}`,
 		` ${frequency} out of ${numBooks} times.`
 		].join('')
 }

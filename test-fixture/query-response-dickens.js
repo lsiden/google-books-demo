@@ -1,6 +1,6 @@
 // response to https://www.googleapis.com/books/v1/volumes?q=intitle:dickens+inauthor:dickens
 
-const response = {
+export default {
     "kind": "books#volumes",
     "totalItems": 300,
     "items": [{
@@ -613,5 +613,3 @@ const response = {
         }
     }]
 }
-
-export default response

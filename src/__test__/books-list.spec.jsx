@@ -5,14 +5,14 @@ import configureStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
 
 import BooksList from '../books-list'
+import apiResponseDickens from '@fixture/query-response-dickens'
 import { getBooksFromApiResponse, } from '../search-results-helpers'
-import apiResponse from '@fixture/query-response'
 import { Actions } from '../actions'
 
 configure({ adapter: new Adapter() })
 
 const debug = require('debug')('google-books-demo:search-results-stats')
-const books = getBooksFromApiResponse(apiResponse)
+const books = getBooksFromApiResponse(apiResponseDickens)
 
 describe('SearchResultsStats', function() {
 	let wrapper, store

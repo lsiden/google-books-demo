@@ -34,18 +34,25 @@ export function getMostFreqAuthors(books) {
 	}
 }
 
+function getPubDate(book, defaultVal) {
+	const match = /\d+/.exec((book.publishedDate || '').trim())
+	return match && match.length > 0 ? match[0] : defaultVal
+}
+
 export function getEarliestPubDate(books) {
 	if (!books || books.length === 0) {
 		return 'not available'
 	}
-	return _.minBy(books, book => Number(book.publishedDate)).publishedDate || 'not available'
+	const book = _.minBy(books, book => getPubDate(book, '9999')) || {}
+	return getPubDate(book) || 'not available'
 }
 
 export function getLatestPubDate(books) {
 	if (!books || books.length === 0) {
 		return 'not available'
 	}
-	return _.maxBy(books, book => Number(book.publishedDate)).publishedDate || 'not available'
+	const book = _.maxBy(books, book => getPubDate(book, 0)) || {}
+	return getPubDate(book) || 'not available'
 }
 
 export function getPropOrDefault(obj, prop, defaultValue) {

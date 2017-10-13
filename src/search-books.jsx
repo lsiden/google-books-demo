@@ -8,8 +8,6 @@ import apiKey from '../google-api-key'
 import 'font-awesome/css/font-awesome.css'
 import './search.css'
 
-import responseFixture from '@fixture/query-response' // TODO replace this with API call
-
 const debug = require('debug')('google-books-demo:search-books')
 const ESC_KEY = 27
 const ENTER_KEY = 13
