@@ -34,16 +34,17 @@ export function getMostFreqAuthors(books) {
 	}
 }
 
-function getPubDate(book, defaultVal) {
+function getPubDate(book) {
 	const match = /\d+/.exec((book.publishedDate || '').trim())
-	return match && match.length > 0 ? match[0] : defaultVal
+	return match && match.length > 0 ? match[0] : undefined
 }
 
 export function getEarliestPubDate(books) {
 	if (!books || books.length === 0) {
 		return 'not available'
 	}
-	const book = _.minBy(books, book => getPubDate(book, '9999')) || {}
+	const booksWithPubDate = books.filter(book => !!getPubDate(book))
+	const book = _.minBy(booksWithPubDate, book => getPubDate(book)) || {}
 	return getPubDate(book) || 'not available'
 }
 
@@ -51,7 +52,8 @@ export function getLatestPubDate(books) {
 	if (!books || books.length === 0) {
 		return 'not available'
 	}
-	const book = _.maxBy(books, book => getPubDate(book, 0)) || {}
+	const booksWithPubDate = books.filter(book => !!getPubDate(book))
+	const book = _.maxBy(booksWithPubDate, book => getPubDate(book)) || {}
 	return getPubDate(book) || 'not available'
 }
 
