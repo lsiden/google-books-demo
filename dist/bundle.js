@@ -7506,17 +7506,20 @@ function getMostFreqAuthors(books) {
 	};
 }
 
-function getPubDate(book, defaultVal) {
+function getPubDate(book) {
 	var match = /\d+/.exec((book.publishedDate || '').trim());
-	return match && match.length > 0 ? match[0] : defaultVal;
+	return match && match.length > 0 ? match[0] : undefined;
 }
 
 function getEarliestPubDate(books) {
 	if (!books || books.length === 0) {
 		return 'not available';
 	}
-	var book = (0, _minBy3.default)(books, function (book) {
-		return getPubDate(book, '9999');
+	var booksWithPubDate = books.filter(function (book) {
+		return !!getPubDate(book);
+	});
+	var book = (0, _minBy3.default)(booksWithPubDate, function (book) {
+		return getPubDate(book);
 	}) || {};
 	return getPubDate(book) || 'not available';
 }
@@ -7525,8 +7528,11 @@ function getLatestPubDate(books) {
 	if (!books || books.length === 0) {
 		return 'not available';
 	}
-	var book = (0, _maxBy3.default)(books, function (book) {
-		return getPubDate(book, 0);
+	var booksWithPubDate = books.filter(function (book) {
+		return !!getPubDate(book);
+	});
+	var book = (0, _maxBy3.default)(booksWithPubDate, function (book) {
+		return getPubDate(book);
 	}) || {};
 	return getPubDate(book) || 'not available';
 }
@@ -39002,6 +39008,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(22);
 
 var _react2 = _interopRequireDefault(_react);
@@ -39020,6 +39028,12 @@ var _searchResultsHelpers = __webpack_require__(180);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
 var debug = __webpack_require__(49)('google-books-demo:search-results-stats');
 
 function mostFreqAuthorsText(freqAuthors, numBooks) {
@@ -39030,75 +39044,108 @@ function mostFreqAuthorsText(freqAuthors, numBooks) {
 	return ['Most frequent ' + (isPlural ? 'authors' : 'author') + ' in results:', ' ' + authors.join('; ') + ' ' + (isPlural ? 'each appear' : 'appears'), ' ' + frequency + ' out of ' + numBooks + ' times.'].join('');
 }
 
-function searchResultsStats(_ref) {
-	var books = _ref.books,
-	    responseTime = _ref.responseTime;
+var searchResultsStats = function (_React$Component) {
+	_inherits(searchResultsStats, _React$Component);
 
-	if (!books) {
-		return null;
+	function searchResultsStats() {
+		var _ref;
+
+		var _temp, _this, _ret;
+
+		_classCallCheck(this, searchResultsStats);
+
+		for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+			args[_key] = arguments[_key];
+		}
+
+		return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = searchResultsStats.__proto__ || Object.getPrototypeOf(searchResultsStats)).call.apply(_ref, [this].concat(args))), _this), _this.componentDidCatch = function (error, info) {
+			debug(error);
+			debug(info);
+		}, _temp), _possibleConstructorReturn(_this, _ret);
 	}
-	var freqAuthors = (0, _searchResultsHelpers.getMostFreqAuthors)(books);
-	var earliestPubDate = (0, _searchResultsHelpers.getEarliestPubDate)(books);
-	var latestPubDate = (0, _searchResultsHelpers.getLatestPubDate)(books);
-	return _react2.default.createElement(
-		'div',
-		{ className: 'search-results-stats' },
-		_react2.default.createElement(
-			'h2',
-			null,
-			'Search Results Statistics'
-		),
-		books.length === 0 ? _react2.default.createElement(
-			'ul',
-			null,
-			_react2.default.createElement(
-				'li',
-				null,
-				'No books found matching search.'
-			),
-			_react2.default.createElement(
-				'li',
-				null,
-				'Response time: ',
-				responseTime,
-				'ms'
-			)
-		) : _react2.default.createElement(
-			'ul',
-			null,
-			_react2.default.createElement(
-				'li',
-				null,
-				'Number of books found: ',
-				books.length
-			),
-			_react2.default.createElement(
-				'li',
-				null,
-				mostFreqAuthorsText(freqAuthors, books.length)
-			),
-			_react2.default.createElement(
-				'li',
-				null,
-				'Earliest publication date: ',
-				earliestPubDate
-			),
-			_react2.default.createElement(
-				'li',
-				null,
-				'Latest publication date: ',
-				latestPubDate
-			),
-			_react2.default.createElement(
-				'li',
-				null,
-				'Response time: ',
-				responseTime,
-				'ms'
-			)
-		)
-	);
-}
+
+	_createClass(searchResultsStats, [{
+		key: 'render',
+		value: function render() {
+			var _props = this.props,
+			    books = _props.books,
+			    responseTime = _props.responseTime;
+
+
+			if (!books) {
+				return null;
+			}
+			var freqAuthors = (0, _searchResultsHelpers.getMostFreqAuthors)(books);
+			var earliestPubDate = (0, _searchResultsHelpers.getEarliestPubDate)(books);
+			var latestPubDate = (0, _searchResultsHelpers.getLatestPubDate)(books);
+			return _react2.default.createElement(
+				'div',
+				{ className: 'search-results-stats' },
+				_react2.default.createElement(
+					'h2',
+					null,
+					'Search Results Statistics'
+				),
+				books.length === 0 ? _react2.default.createElement(
+					'ul',
+					null,
+					_react2.default.createElement(
+						'li',
+						null,
+						'No books found matching search.'
+					),
+					_react2.default.createElement(
+						'li',
+						null,
+						'Response time: ',
+						responseTime,
+						'ms'
+					)
+				) : _react2.default.createElement(
+					'ul',
+					null,
+					_react2.default.createElement(
+						'li',
+						null,
+						'Number of books found: ',
+						books.length
+					),
+					_react2.default.createElement(
+						'li',
+						null,
+						mostFreqAuthorsText(freqAuthors, books.length)
+					),
+					_react2.default.createElement(
+						'li',
+						null,
+						'Earliest publication date: ',
+						earliestPubDate
+					),
+					_react2.default.createElement(
+						'li',
+						null,
+						'Latest publication date: ',
+						latestPubDate
+					),
+					_react2.default.createElement(
+						'li',
+						null,
+						'Response time: ',
+						responseTime,
+						'ms'
+					)
+				)
+			);
+		}
+	}]);
+
+	return searchResultsStats;
+}(_react2.default.Component);
+
+searchResultsStats.propTypes = {
+	books: _propTypes2.default.arrayOf(_propTypes2.default.object),
+	responseTime: _propTypes2.default.PropTypes.number
+};
 exports.default = (0, _reactRedux.connect)(function (state) {
 	return {
 		books: state.books,
