@@ -21,30 +21,43 @@ function mostFreqAuthorsText(freqAuthors, numBooks) {
 		].join('')
 }
 
-function searchResultsStats({books, responseTime}) {
-	if (!books) {
-		return null
+class searchResultsStats extends React.Component {
+	static propTypes = {
+		books: PropTypes.arrayOf(PropTypes.object),
+		responseTime: PropTypes.PropTypes.number,
 	}
-	const freqAuthors = getMostFreqAuthors(books)
-	const earliestPubDate = getEarliestPubDate(books)
-	const latestPubDate = getLatestPubDate(books)
-	return (
-		<div className="search-results-stats">
-			<h2>Search Results Statistics</h2>
-			{
-				books.length === 0 ? <ul>
-					<li>No books found matching search.</li>
-					<li>Response time: {responseTime}ms</li>
-				</ul> : <ul>
-					<li>Number of books found: {books.length}</li>
-					<li>{mostFreqAuthorsText(freqAuthors, books.length)}</li>
-					<li>Earliest publication date: {earliestPubDate}</li>
-					<li>Latest publication date: {latestPubDate}</li>
-					<li>Response time: {responseTime}ms</li>
-				</ul>
-			}
-		</div>
-	)
+	render() {
+		const {books, responseTime} = this.props
+
+		if (!books) {
+			return null
+		}
+		const freqAuthors = getMostFreqAuthors(books)
+		const earliestPubDate = getEarliestPubDate(books)
+		const latestPubDate = getLatestPubDate(books)
+		return (
+			<div className="search-results-stats">
+				<h2>Search Results Statistics</h2>
+				{
+					books.length === 0 ? <ul>
+						<li>No books found matching search.</li>
+						<li>Response time: {responseTime}ms</li>
+					</ul> : <ul>
+						<li>Number of books found: {books.length}</li>
+						<li>{mostFreqAuthorsText(freqAuthors, books.length)}</li>
+						<li>Earliest publication date: {earliestPubDate}</li>
+						<li>Latest publication date: {latestPubDate}</li>
+						<li>Response time: {responseTime}ms</li>
+					</ul>
+				}
+			</div>
+		)
+	}
+
+    componentDidCatch = (error, info) => {
+    	debug(error)
+    	debug(info)
+    }
 }
 export default connect(
 	state => ({
