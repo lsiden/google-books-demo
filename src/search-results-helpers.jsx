@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { createSelector } from 'reselect'
 
 export const bookAttrDefaults = {
 	title: '',
@@ -11,15 +12,20 @@ const debug = require('debug')('google-books-demo:search-results-helpers')
 
 export const bookAttrs = _.keys(bookAttrDefaults)
 
+function selectBooks(state) {
+	return state.books
+}
+
 export function getAuthorFrequency(books=[]) {
 	return _.flatten(books.map(book => book.authors)).reduce((result, author) => {
 		result[author] = (result[author] || 0) + 1
 		return result
 	}, {})
 }
-export function selectAuthorFrequency(state={}) {
-	return getAuthorFrequency(state.books)
-}
+export const selectAuthorFrequency = createSelector(
+	selectBooks,
+	getAuthorFrequency
+)
 
 // Returns [ { author, frequency }, ... ]
 export function getMostFreqAuthors(books=[]) {
@@ -36,9 +42,10 @@ export function getMostFreqAuthors(books=[]) {
 		authors: arAuthorFreq.filter(item => item.frequency === aMostFrequentAuthor.frequency).map(item => item.author),
 	}
 }
-export function selectMostFreqAuthors(state={}) {
-	return getMostFreqAuthors(state.books)
-}
+export const selectMostFreqAuthors = createSelector(
+	selectBooks,
+	getMostFreqAuthors
+)
 
 function getPubDate(book={}) {
 	const match = /\d+/.exec((book.publishedDate || '').trim())
@@ -53,9 +60,10 @@ export function getEarliestPubDate(books=[]) {
 	const book = _.minBy(booksWithPubDate, book => getPubDate(book)) || {}
 	return getPubDate(book) || 'not available'
 }
-export function selectEarliestPubDate(state={}) {
-	return getEarliestPubDate(state.books)
-}
+export const selectEarliestPubDate = createSelector(
+	selectBooks,
+	getEarliestPubDate
+)
 
 export function getLatestPubDate(books=[]) {
 	if (!books || books.length === 0) {
@@ -65,9 +73,10 @@ export function getLatestPubDate(books=[]) {
 	const book = _.maxBy(booksWithPubDate, book => getPubDate(book)) || {}
 	return getPubDate(book) || 'not available'
 }
-export function selectLatestPubDate(state={}) {
-	return getLatestPubDate(state.books)
-}
+export const selectLatestPubDate = createSelector(
+	selectBooks,
+	getLatestPubDate
+)
 
 export function getPropOrDefault(obj={}, prop, defaultValue=undefined) {
 	return typeof obj !== 'undefined' && typeof obj[prop] !== 'undefined' ? obj[prop] : defaultValue
