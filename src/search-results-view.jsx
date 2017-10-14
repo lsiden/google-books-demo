@@ -4,9 +4,9 @@ import { connect } from 'react-redux'
 
 import BookReference from 'book-reference'
 import {
-	getMostFreqAuthors,
-	getEarliestPubDate,
-	getLatestPubDate,
+	selectMostFreqAuthors,
+	selectEarliestPubDate,
+	selectLatestPubDate,
 } from 'search-results-helpers'
 
 const debug = require('debug')('google-books-demo:search-results-stats')
@@ -21,20 +21,23 @@ function mostFreqAuthorsText(freqAuthors, numBooks) {
 		].join('')
 }
 
-class searchResultsStats extends React.Component {
+class viewSearchResults extends React.Component {
 	static propTypes = {
 		books: PropTypes.arrayOf(PropTypes.object),
 		responseTime: PropTypes.PropTypes.number,
 	}
 	render() {
-		const {books, responseTime} = this.props
+		const {
+			books,
+			responseTime,
+			freqAuthors,
+			earliestPubDate,
+			latestPubDate,
+		} = this.props
 
 		if (!books) {
 			return null
 		}
-		const freqAuthors = getMostFreqAuthors(books)
-		const earliestPubDate = getEarliestPubDate(books)
-		const latestPubDate = getLatestPubDate(books)
 		return (
 			<div className="search-results-stats">
 				<h2>Search Results Statistics</h2>
@@ -63,5 +66,8 @@ export default connect(
 	state => ({
 		books: state.books,
 		responseTime: state.responseTime,
+		freqAuthors: selectMostFreqAuthors(state),
+		earliestPubDate: selectEarliestPubDate(state),
+		latestPubDate: selectLatestPubDate(state),
 	})
-)(searchResultsStats)
+)(viewSearchResults)

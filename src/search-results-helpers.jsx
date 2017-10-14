@@ -17,10 +17,13 @@ export function getAuthorFrequency(books=[]) {
 		return result
 	}, {})
 }
+export function selectAuthorFrequency(state={}) {
+	return getAuthorFrequency(state.books)
+}
 
 // Returns [ { author, frequency }, ... ]
-export function getMostFreqAuthors(books) {
-	if (!books || books.length === 0) {
+export function getMostFreqAuthors(books=[]) {
+	if (books.length === 0) {
 		return 'not available'
 	}
 	const authorFreq = getAuthorFrequency(books)
@@ -33,13 +36,16 @@ export function getMostFreqAuthors(books) {
 		authors: arAuthorFreq.filter(item => item.frequency === aMostFrequentAuthor.frequency).map(item => item.author),
 	}
 }
+export function selectMostFreqAuthors(state={}) {
+	return getMostFreqAuthors(state.books)
+}
 
-function getPubDate(book) {
+function getPubDate(book={}) {
 	const match = /\d+/.exec((book.publishedDate || '').trim())
 	return match && match.length > 0 ? match[0] : undefined
 }
 
-export function getEarliestPubDate(books) {
+export function getEarliestPubDate(books=[]) {
 	if (!books || books.length === 0) {
 		return 'not available'
 	}
@@ -47,8 +53,11 @@ export function getEarliestPubDate(books) {
 	const book = _.minBy(booksWithPubDate, book => getPubDate(book)) || {}
 	return getPubDate(book) || 'not available'
 }
+export function selectEarliestPubDate(state={}) {
+	return getEarliestPubDate(state.books)
+}
 
-export function getLatestPubDate(books) {
+export function getLatestPubDate(books=[]) {
 	if (!books || books.length === 0) {
 		return 'not available'
 	}
@@ -56,8 +65,11 @@ export function getLatestPubDate(books) {
 	const book = _.maxBy(booksWithPubDate, book => getPubDate(book)) || {}
 	return getPubDate(book) || 'not available'
 }
+export function selectLatestPubDate(state={}) {
+	return getLatestPubDate(state.books)
+}
 
-export function getPropOrDefault(obj, prop, defaultValue) {
+export function getPropOrDefault(obj={}, prop, defaultValue=undefined) {
 	return typeof obj !== 'undefined' && typeof obj[prop] !== 'undefined' ? obj[prop] : defaultValue
 }
 

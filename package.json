@@ -49,6 +49,7 @@
     "react-font-awesome": "^1.0.3",
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
+    "reselect": "^3.0.1",
     "whatwg-fetch": "^2.0.3"
   },
   "jest": {

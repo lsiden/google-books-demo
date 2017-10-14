@@ -5,7 +5,7 @@ import _ from 'lodash'
 
 import SearchBooks from 'search-books'
 import BooksList from './books-list'
-import SearchResultsStats from './search-results-stats'
+import SearchResultsView from './search-results-view'
 
 const debug = require('debug')('google-books-demo:book-browser')
 const initialQuery = window.localStorage.getItem('initialQuery') || ''
@@ -27,7 +27,7 @@ class bookBrowser extends React.Component {
 			<div className="books-browser">
 				<SearchBooks initQuery={initialQuery} limit={limit} />
 				<BooksList />
-				<SearchResultsStats />
+				<SearchResultsView />
 			</div>
 		)
 	}
