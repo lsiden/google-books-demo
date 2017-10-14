@@ -58,14 +58,14 @@ export function getLatestPubDate(books=[]) {
 	return getPubDate(book) || 'not available'
 }
 
-function getBookFromVol({ volumeInfo, selfLink }) {
+function getBookFromVol({ volumeInfo={}, selfLink='' }) {
 	return _.keys(bookAttrDefaults.volumeInfo).reduce((book, attr) => {
 		book[attr] = volumeInfo[attr] || bookAttrDefaults.volumeInfo[attr]
 		return book
 	}, { selfLink })
 }
 
-export function getBooksFromApiResponse(res) {
+export function getBooksFromApiResponse(res={}) {
 	return res.items ? res.items
 		.filter(item => item.kind === 'books#volume')
 		.map(item => getBookFromVol(item))
