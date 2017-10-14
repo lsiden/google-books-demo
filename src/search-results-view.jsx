@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import BookReference from 'book-reference'
 import {
-	selectMostFreqAuthors,
-	selectEarliestPubDate,
-	selectLatestPubDate,
-} from 'search-results-helpers'
+	booksFound,
+	mostFreqAuthors,
+	earliestPubDate,
+	latestPubDate,
+} from 'search-results-selectors'
 
 const debug = require('debug')('google-books-demo:search-results-stats')
 
@@ -35,10 +35,7 @@ class viewSearchResults extends React.Component {
 			latestPubDate,
 		} = this.props
 
-		if (!books) {
-			return null
-		}
-		return (
+		return books && books.length > 0 ? (
 			<div className="search-results-stats">
 				<h2>Search Results Statistics</h2>
 				{
@@ -54,7 +51,7 @@ class viewSearchResults extends React.Component {
 					</ul>
 				}
 			</div>
-		)
+		) : null
 	}
 
     componentDidCatch = (error, info) => {
@@ -64,10 +61,10 @@ class viewSearchResults extends React.Component {
 }
 export default connect(
 	state => ({
-		books: state.books,
+		books: booksFound(state),
 		responseTime: state.responseTime,
-		freqAuthors: selectMostFreqAuthors(state),
-		earliestPubDate: selectEarliestPubDate(state),
-		latestPubDate: selectLatestPubDate(state),
+		freqAuthors: mostFreqAuthors(state),
+		earliestPubDate: earliestPubDate(state),
+		latestPubDate: latestPubDate(state),
 	})
 )(viewSearchResults)
