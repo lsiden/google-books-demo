@@ -7,6 +7,7 @@ import {
 	mostFreqAuthors,
 	earliestPubDate,
 	latestPubDate,
+	responseTime,
 } from 'search-results-selectors'
 
 const debug = require('debug')('google-books-demo:search-results-stats')
@@ -62,7 +63,7 @@ class viewSearchResults extends React.Component {
 export default connect(
 	state => ({
 		books: booksFound(state),
-		responseTime: state.responseTime,
+		responseTime: responseTime(state),
 		freqAuthors: mostFreqAuthors(state),
 		earliestPubDate: earliestPubDate(state),
 		latestPubDate: latestPubDate(state),

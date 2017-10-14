@@ -22,6 +22,13 @@ const booksGino = getBooksFromApiResponse(apiResponseGino)
 const booksNoPubDate = getBooksFromApiResponse(apiResponseNoPubDate)
 const booksOnePubDate = getBooksFromApiResponse(apiResponseOnePubDate)
 const booksSmith = getBooksFromApiResponse(apiResponseSmith)
+const expectedBookAttrs = [
+	'title',
+	'authors',
+	'publishedDate',
+	'description',
+	'selfLink',
+]
 
 describe('search-results-helpers', function() {
 	describe('getBooksFromApiResponse', function() {
@@ -32,9 +39,9 @@ describe('search-results-helpers', function() {
 				0)
 			expect(booksDickens).toHaveLength(expected)
 		})
-		it('returns array of { ...bookAttrs } ', function() {
+		it('returns array of { ...expectedBookAttrs } ', function() {
 			booksDickens.forEach(book => {
-				bookAttrs.forEach(attr => {
+				expectedBookAttrs.forEach(attr => {
 					expect(book).toHaveProperty(attr)
 				})
 			})

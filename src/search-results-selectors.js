@@ -12,6 +12,10 @@ export function booksFound(state) {
 	return state.books
 }
 
+export function responseTime(state) {
+	return state.responseTime
+}
+
 export const mostFreqAuthors = createSelector(
 	booksFound,
 	getMostFreqAuthors
